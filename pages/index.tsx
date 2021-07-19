@@ -6,37 +6,47 @@ import { fetchStudents, Student } from "../services/students";
 type Props = {};
 
 const Main: React.FC<Props> = ({}) => {
-  const [students, setStudents] = useState([]);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
+    console.log("Inicio useEffect Inicial");
     async function fetch() {
       const data = await fetchStudents();
-
       setStudents(data);
+      setFilteredStudents(data);
     }
 
-    if (students.length === 0) {
-      fetch();
-    }
-  });
+    fetch();
+    console.log("Fin useEffect Inicial");
+  }, []);
 
-  console.log("students:", students);
+  useEffect(() => {
+    const result = filteredStudents.filter(
+      (student) =>
+        student.first_name.toLowerCase().includes(searchValue) ||
+        student.last_name.toLowerCase().includes(searchValue)
+    );
 
-  //crear un state
-  //anexar todos los estudiantes en el state
-  //buscar dentro del state con like, para el buscador
+    setStudents(result);
+  }, [searchValue]);
 
   const onChangeHandler = (event: any) => {
-    // TODO
-    //Buscador
+    const searchTerm = event.target.value;
+    setSearchValue(searchTerm.toLowerCase());
   };
 
   return (
     <Box direction="column" pad="medium" height="100%" overflow="auto">
-      <TextInput placeholder="type here" value="" onChange={onChangeHandler} />
+      <TextInput
+        placeholder="type here"
+        value={searchValue}
+        onChange={onChangeHandler}
+      />
       <Box direction="row" wrap={true}>
-        {students.map((s) => (
-          <Box margin="10px">
+        {students.map((s, i) => (
+          <Box key={i} margin="10px">
             <UserCard user={s} />
           </Box>
         ))}
