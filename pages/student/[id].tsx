@@ -27,10 +27,9 @@ const Student = () => {
       pad="medium"
       border={{ color: "brand", size: "large" }}
       style={{
-        margin: "20px",
         flex: 1,
+        margin: "20px",
         justifyContent: "space-around",
-        backgroundColor: "#fbf7f7",
       }}
       align="center"
     >
@@ -47,12 +46,9 @@ const Student = () => {
         <Image fit="cover" src={avatar} />
       </Box>
 
-      <Box direction="row" gap="small">
+      <Box direction="row">
         <Text size="large" weight="bold">
-          {first_name}
-        </Text>
-        <Text size="large" weight="bold">
-          {last_name}
+          {`${first_name} ${last_name}`}
         </Text>
       </Box>
 
@@ -68,7 +64,7 @@ const Student = () => {
 
       <Box direction="row" gap="small">
         <Text>
-          <strong>Job Name:</strong> : {job}
+          <strong>Position:</strong> {job}
         </Text>
       </Box>
 
