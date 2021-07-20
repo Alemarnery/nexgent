@@ -6,19 +6,48 @@ import { fetchStudents, Student } from "../services/students";
 type Props = {};
 
 const Main: React.FC<Props> = ({}) => {
+  const [students, setStudents] = useState<Student[]>([]);
+  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+  const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    async function fetch() {
+      const data = await fetchStudents();
+      setStudents(data);
+      setFilteredStudents(data);
+    }
+
+    fetch();
+  }, []);
+
+  useEffect(() => {
+    const result = filteredStudents.filter(
+      (student) =>
+        student.first_name.toLowerCase().includes(searchValue) ||
+        student.last_name.toLowerCase().includes(searchValue)
+    );
+
+    setStudents(result);
+  }, [searchValue]);
+
   const onChangeHandler = (event: any) => {
-    // TODO
+    const searchTerm = event.target.value;
+    setSearchValue(searchTerm.toLowerCase());
   };
 
   return (
     <Box direction="column" pad="medium" height="100%" overflow="auto">
-      <TextInput placeholder="type here" value="" onChange={onChangeHandler} />
+      <TextInput
+        placeholder="type here"
+        value={searchValue}
+        onChange={onChangeHandler}
+      />
       <Box direction="row" wrap={true}>
-        {/* {students.map((s) => (
-          <Box margin="10px">
+        {students.map((s, i) => (
+          <Box key={i} margin="10px">
             <UserCard user={s} />
           </Box>
-        ))} */}
+        ))}
       </Box>
     </Box>
   );
