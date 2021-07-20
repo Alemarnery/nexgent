@@ -11,7 +11,6 @@ const Main: React.FC<Props> = ({}) => {
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    console.log("Inicio useEffect Inicial");
     async function fetch() {
       const data = await fetchStudents();
       setStudents(data);
@@ -19,7 +18,6 @@ const Main: React.FC<Props> = ({}) => {
     }
 
     fetch();
-    console.log("Fin useEffect Inicial");
   }, []);
 
   useEffect(() => {
